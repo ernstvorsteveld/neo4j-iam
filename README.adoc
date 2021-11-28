@@ -1,0 +1,14 @@
+= Neo4j
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectnumlevels: 4
+:author: Ernst Vorsteveld
+:title: {doctitle}
+:title-page:
+:revnumber: 0.1
+:revdate: 28-11-2021
+
+== Neo4j database
+
+Some spielerei using Neo4j
