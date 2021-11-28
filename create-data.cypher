@@ -9,10 +9,62 @@ CREATE (n:Entitlement:Firm1 {name : 'create'});
 CREATE (n:Entitlement:Firm1 {name : 'edit'});
 CREATE (n:Entitlement:Firm1 {name : 'delete'});
 
-CREATE (e:Event:Firm1 {name : 'Login Success'})
-CREATE (e:Event:Firm1 {name : 'Login Failed'})
-CREATE (e:Event:Firm1 {name : 'Password Reset Requested'})
-CREATE (e:Event:Firm1 {name : 'Password Reset Success'})
+CREATE (e:Event:Firm1 {name : 'Login Success'});
+CREATE (e:Event:Firm1 {name : 'Login Failed'});
+CREATE (e:Event:Firm1 {name : 'Password Reset Requested'});
+CREATE (e:Event:Firm1 {name : 'Password Reset Success'});
+
+
+MATCH
+  (a:Identity),
+  (e:Event)
+WHERE a.name = 'Major Tom' AND e.name = 'Login Failed'
+CREATE (a)-[ae:PERFORMED {on: "03-11-2021", count: 3}]->(e)
+RETURN type(ae);
+
+MATCH
+  (a:Identity),
+  (e:Event)
+WHERE a.name = 'Major Tom' AND e.name = 'Password Reset Requested'
+CREATE (a)-[ae:PERFORMED {on: "03-11-2021", count: 1}]->(e)
+RETURN type(ae);
+MATCH
+  (a:Identity),
+  (e:Event)
+WHERE a.name = 'Major Tom' AND e.name = 'Password Reset Success'
+CREATE (a)-[ae:PERFORMED {on: "03-11-2021", count: 1}]->(e)
+RETURN type(ae);
+
+MATCH
+  (a:Identity),
+  (e:Event)
+WHERE a.name = 'Major Tom' AND e.name = 'Login Success'
+CREATE (a)-[ae:PERFORMED {on: "03-11-2021", count:1}]->(e)
+RETURN type(ae);
+
+
+
+
+MATCH
+  (a:Identity),
+  (e:Event)
+WHERE a.name = 'John doe' AND e.name = 'Login Success'
+CREATE (a)-[ae:PERFORMED {on: "01-11-2021", count:1}]->(e)
+RETURN type(ae);
+
+MATCH
+  (a:Identity),
+  (e:Event)
+WHERE a.name = 'John doe' AND e.name = 'Login Failed'
+CREATE (a)-[ae:PERFORMED {on: "02-11-2021", count:2}]->(e)
+RETURN type(ae);
+MATCH
+  (a:Identity),
+  (e:Event)
+WHERE a.name = 'John doe' AND e.name = 'Login Success'
+CREATE (a)-[ae:PERFORMED {on: "02-11-2021", count: 1}]->(e)
+RETURN type(ae);
+
 
 
 MATCH
@@ -66,34 +118,3 @@ MATCH
 WHERE a.name = 'read' AND b.name = 'TPI Manager'
 CREATE (b)-[r:CAN {on: "Supplier", since: "01-01-2021"}]->(a)
 RETURN type(r);
-
-// MATCH ()-[r]-() WHERE id(r)=3 DELETE r;
-
-MATCH (n)
-DETACH DELETE n;
-
-MATCH (n:Firm1)
-WHERE n.name STARTS WITH 'Jo'
-RETURN n;
-
-
-MATCH (r {name:"TPI Manager"})<-[ri:IS] - (n)
-WHERE ri.since = "01-11-2021"
-RETURN ri,n;
-
-// All roles that have read entitlement on Supplier
-MATCH (e:Entitlement) <- [er:CAN] - (r:Role) <- [rir:IS] - (i:Identity)
-Where er.on="Supplier" AND e.name = "read"
-RETURN i;
-
-// All identities that can create on a supplier
-MATCH (e:Entitlement) <- [er:CAN] - (r:Role) <- [ri:IS] - (i:Identity)
-Where er.on="Supplier" AND e.name = "create"
-RETURN i.name, ri.since, r.name, er.since, e.name;
-
-MATCH (e:Entitlement) <- [er:CAN] - (r:Role)
-Where er.on="Supplier" AND e.name = "read"
-RETURN count(r);
-
-MATCH (e:Entitlement) <- [er:CAN] - (r:Role)
-RETURN r, er;
