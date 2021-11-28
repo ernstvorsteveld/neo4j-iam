@@ -12,3 +12,12 @@
 == Neo4j database
 
 Some spielerei using Neo4j
+
+== Install Neo4j shell
+Install the shell:
+
+`brew install cypher-shell`
+
+Connect to shell
+
+`cypher-shell -u neo4j -p <password>`
