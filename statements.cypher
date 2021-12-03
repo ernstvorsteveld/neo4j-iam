@@ -12,6 +12,11 @@ MATCH (r {name:"TPI Manager"})<-[ri:IS] - (n)
 WHERE ri.since = "01-11-2021"
 RETURN ri,n;
 
+MATCH (r {name:"Supplier Manager"})<-[ri:IS] - (n)
+WHERE ri.since = "01-01-2021"
+RETURN ri,n;
+
+
 // All roles that have read entitlement on Supplier
 MATCH (e:Entitlement) <- [er:CAN] - (r:Role) <- [rir:IS] - (i:Identity)
 Where er.on="Supplier" AND e.name = "read"
@@ -20,6 +25,10 @@ RETURN i;
 // All identities that can create on a supplier
 MATCH (e:Entitlement) <- [er:CAN] - (r:Role) <- [ri:IS] - (i:Identity)
 Where er.on="Supplier" AND e.name = "create"
+RETURN i.name, ri.since, r.name, er.since, e.name;
+
+MATCH (e:Entitlement) <- [er:CAN] - (r:Role) <- [ri:IS] - (i:Identity)
+Where er.on="Supplier" AND e.name = "read"
 RETURN i.name, ri.since, r.name, er.since, e.name;
 
 MATCH (e:Entitlement) <- [er:CAN] - (r:Role)
