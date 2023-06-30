@@ -31,6 +31,10 @@ MATCH (e:Entitlement) <- [er:CAN] - (r:Role) <- [ri:IS] - (i:Identity)
 Where er.on="Supplier" AND e.name = "read"
 RETURN i.name, ri.since, r.name, er.since, e.name;
 
+MATCH (i:Identity) - [ri:IS] ->  (r:Role) - [er:CAN] -> (e:Entitlement)
+Where er.on="Supplier" AND e.name = "read"
+RETURN i.name, ri.since, r.name, er.since, e.name;
+
 MATCH (e:Entitlement) <- [er:CAN] - (r:Role)
 Where er.on="Supplier" AND e.name = "read"
 RETURN count(r);
